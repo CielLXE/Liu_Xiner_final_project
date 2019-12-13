@@ -1,0 +1,26 @@
+{% extends 'social_media/base1.html' %}
+{% block content %}
+   <post>
+       <div class="date">
+           {{ post.date }}
+       </div>
+       <p><icon><i class="fas fa-star"></i></icon>{{ post.author }}</p>
+       <p>{{ post.text|linebreaksbr }}</p>
+   </post>
+    <p> <a class="add_comment" href="{% url 'add_comment' pk=post.pk %}"><i class="far fa-comment-dots"> Add Comment</i></a></p>
+    <comment_detail>
+    {% for comment in post.comments.all %}
+{#    {% if user.is_authenticated or comment.approved_comment %}#}
+        <div class="date">
+            {{ comment.date }}
+        </div>
+        <p><icon><i class="far fa-star"></i></icon>{{ comment.author }}</p>
+        <p>{{ comment.text|linebreaks }}</p>
+    <p>---------------------------------------------------------</p>
+
+{#    {% endif %}#}
+    {% empty %}
+        <p>No comments here yet :(</p>
+    {% endfor %}
+    </comment_detail>
+{% endblock %}

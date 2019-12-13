@@ -1,0 +1,14 @@
+{%  extends 'social_media/base1.html' %}
+{% block title %}
+    Star Social - Login
+{% endblock %}
+{%  block content %}
+    <div class="comment_box">
+        <h2>Login</h2>
+      <form method="post">
+    {%  csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+        </form>
+    </div>
+{%  endblock %}

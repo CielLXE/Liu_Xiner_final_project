@@ -1,0 +1,18 @@
+{% extends 'social_media/base1.html' %}
+{% block title %}
+    Star Social - Homepage
+{% endblock %}
+{% block content %}
+    {% for post in posts %}
+        <post>
+            <div class="date">
+                {{ post.date }}
+            </div>
+            <p><icon><i class="fas fa-star"></i></icon>{{ post.author }}</p>
+            <p>{{ post.text|linebreaksbr }}</p>
+            <p><i class="far fa-comment-dots"> </i>
+                <a href="{% url 'post_detail' pk=post.id %}" class="comment">Comments: {{ post.comments.count }}</a></p>
+            <p>---------------------------------------------------------</p>
+        </post>
+    {% endfor %}
+{% endblock %}

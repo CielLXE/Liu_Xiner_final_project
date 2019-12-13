@@ -1,0 +1,105 @@
+body, html {height: 100%;
+            margin:0px;
+            padding:0px;
+        }
+h1,h2,h3,h4,h5,h6 {font-family: "Lobster", sans-serif}
+.menu {display: none}
+.bgimg {
+    background-size: cover;
+    background-image: url("images/star.jpg");
+    background-position: center;
+    min-height: 100%;
+    background-repeat:repeat-y;
+    background-color: transparent;
+    border:none;
+}
+.page-header {
+    font-family: Lobster;
+    margin-top: 0;
+    margin-left:40%;
+    padding: 20px 20px 50px 40px;
+    color: white;
+    position: center;
+    left:550px;
+    font-size:22px;
+}
+nav {
+    border-top: 1px solid #eee;
+    width: 78%;
+    border-bottom: 1px solid #eee;
+    margin: 0 0 0;
+    padding: 20px 150px;
+}
+
+nav ul {
+    margin: 0;
+    padding: 1em 0;
+    list-style-type: none;
+    text-align: center;
+}
+
+nav ul li {
+    display: inline;
+    padding: 0;
+    margin: 0 50px;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 1rem;
+    letter-spacing: .10rem;
+    color: 	#00FFFF;
+}
+nav a {
+    color:#00FFFF;
+}
+nav a:hover {
+    background: #4000ff;
+    color: white;
+}
+.top-menu, .top-menu:hover, .top-menu:visited {
+    color: #ffffff;
+    font-size: 22pt;
+    margin-left: 33%;
+}
+.content{
+    margin-left: 20%;
+    background-color: black;
+    margin-right:20%;
+    opacity: 70%;
+}
+.date {
+    float: right;
+}
+post {
+    color: white;
+}
+post icon{
+    color:yellow;
+}
+comment_detail{
+    color: white;
+}
+comment_detail icon{
+    color:yellow;
+}
+.comment{
+    color: cornflowerblue;
+}
+.comment:hover{
+    background: cornflowerblue;
+    color: white;
+}
+.add_comment{
+    color: cornflowerblue;
+    margin-left: 43%;
+}
+.add_comment:hover{
+    background: cornflowerblue;
+    color: white;
+}
+
+.comment_box{
+    font-size:20px;
+    margin-left: 25%;
+    color: white;
+}

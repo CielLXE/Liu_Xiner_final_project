@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <title>
+         {% block title %}
+            title is provided by inheriting templates
+        {% endblock %}</title>
+    </head>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" type="text/css"
+          href="../../static/social_media/social_media.css">
+    <body>
+    <header class = "bgimg">
+        <div class="page-header">
+            <h1>Star Social</h1>
+        </div>
+        <div class = "top-menu">
+        {% if user.is_authenticated %}
+{#                <a href="{% url 'post_new' %}" class="top-menu"></a>#}
+            Hello {{ user.username }} Follows:<a href="">100</a>  Follwers:<a href="/">100</a>
+             <small>(<a href="{% url 'logout_urlpattern' %}">Log out</a>)</small>
+            {% else %}
+             You do not <a href="{% url 'login_urlpattern' %}">Log in</a>
+            {% endif %}
+        </div>
+		<nav>
+            <ul>
+                {% if user.is_authenticated %}
+                <li><i class="fas fa-home">
+                    <a href="{% url 'homepage_list' %}" >
+                        Homepage</a></i></li>
+                {% endif %}
+                <li><i class="fas fa-satellite">
+                     <a href="{% url 'society_list' %}" >
+                         Society</a></i></li>
+            {% if user.is_authenticated %}
+                <li><i class="fas fa-user-circle">
+                    <a href="{% url 'my_profile' pk=user.pk %} ">
+                        My Profile</a></i></li>
+            {% endif %}
+
+            </ul>
+		</nav>
+		<div class="content">
+                {% block content %}
+                {% endblock %}
+        </div>
+    </header>
+    </body>
+</html>

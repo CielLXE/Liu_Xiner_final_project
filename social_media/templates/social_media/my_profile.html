@@ -1,0 +1,16 @@
+{% extends 'social_media/base2.html' %}
+
+{% block content %}
+{% for post in posts %}
+        <post>
+            <div class="date">
+                {{ post.date }}
+            </div>
+            <p><icon><i class="fas fa-star"></i></icon>{{ post.author }}</p>
+            <p>{{ post.text|linebreaksbr }}</p>
+            <p><i class="far fa-comment-dots"> </i>
+                <a href="{% url 'post_detail' pk=post.pk %}" class="comment">Comments: {{ post.comments.count }}</a></p>
+            <p>---------------------------------------------------------</p>
+        </post>
+    {% endfor %}
+{% endblock %}
