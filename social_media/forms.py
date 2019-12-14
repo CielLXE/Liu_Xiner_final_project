@@ -23,4 +23,4 @@ class BulletinForm(forms.ModelForm):
 
     class Meta:
         model = Bulletin
-        fields = ('title', 'text',)
+        fields = ('title', 'text')

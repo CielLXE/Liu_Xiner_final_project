@@ -1,6 +1,7 @@
 
 from django.urls import path
 
+from social_media.views import BulletinEdit,BulletinDelete
 from . import views
 
 urlpatterns = [
@@ -23,7 +24,8 @@ urlpatterns = [
     path('delete_followers/<str:pk>', views.delete_followers, name='delete_followers'),
     path('bulletin/', views.bulletin_list, name='bulletin_list'),
     path('bulletin/add/', views.bulletin_add, name='bulletin_add'),
-    path('bulletin/<int:pk>/edit/', views.bulletin_edit, name='bulletin_edit'),
-    path('bulletin/<int:pk>/delete/', views.bulletin_delete, name='bulletin_delete'),
+    path('bulletin/<int:pk>/edit/', BulletinEdit.as_view(), name='bulletin_edit'),
+    path('bulletin/<int:pk>/delete/', BulletinDelete.as_view(), name='bulletin_delete'),
+    path('register/', views.register, name='register_urlpattern'),
 ]
 

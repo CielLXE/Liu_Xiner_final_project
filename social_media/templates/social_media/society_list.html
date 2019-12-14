@@ -1,4 +1,6 @@
+
 {% extends 'social_media/base1.html' %}
+{% load auth_extras %}
 {% block head %}
     <title>Star Social - Society</title>
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
@@ -26,6 +28,10 @@
                 <a href="{% url 'post_detail' pk=post.id %}" class="comment">Comments</a></p>
             {% else %}
                 <a href="{% url 'login_urlpattern'  %}" class="comment">Comments</a></p>
+            {% endif %}
+            {% if request.user|has_group:"Super_User" %}
+            <p><i class="fas fa-trash-alt"></i>
+                <a href="{% url 'delete_post' pk=post.id %}" class="comment">Delete</a></p></p>
             {% endif %}
             <p>---------------------------------------------------------</p>
           {% empty %}

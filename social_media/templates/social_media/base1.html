@@ -1,3 +1,4 @@
+{% load auth_extras %}
 <html>
     <head>
         {% block head %}
@@ -18,7 +19,7 @@
             Hello <a href = {% url 'my_profile' %}>{{ user.username }}</a> Follows:<a href="{% url 'follows' %}">{{ user.follower.count }}</a>  Followers:<a href="{% url 'followers' %}">{{ user.follows.count }}</a>
              <small>(<a href="{% url 'logout_urlpattern' %}">Log out</a>)</small>
             {% else %}
-             You do not <a href="{% url 'login_urlpattern' %}">Log in</a>
+             You do not <a href="{% url 'login_urlpattern' %}">Log in</a> <a href="{% url 'register_urlpattern' %}">Register</a>
             {% endif %}
         </div>
 		<nav>

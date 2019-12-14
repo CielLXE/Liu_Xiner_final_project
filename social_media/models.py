@@ -1,6 +1,7 @@
 
 # Create your models here.
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 
@@ -48,3 +49,13 @@ class Bulletin(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_update_url(self):
+        return reverse('bulletin_edit',
+                       kwargs={'pk': self.pk}
+                       )
+
+    def get_delete_url(self):
+        return reverse('bulletin_delete',
+                       kwargs={'pk': self.pk}
+                       )

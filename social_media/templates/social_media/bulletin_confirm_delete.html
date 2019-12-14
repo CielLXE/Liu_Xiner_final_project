@@ -1,19 +1,22 @@
 {% extends 'social_media/base1.html' %}
 {% block head %}
-            <title>Edit Bulletin</title>
+            <title>Delete Bulletin</title>
             <script src="https://kit.fontawesome.com/a076d05399.js"></script>
             <link rel="stylesheet" type="text/css"
                   href="../../../static/social_media/social_media.css">
         {% endblock %}
+
 {% block content %}
-    <div class="comment_box">
-    <p>Edit Bulletin</p>
-   <form
-        action="{{ bulletin.get_update_url }}"
+    <form
+        action="{{ bulletin.get_delete_url }}"
         method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Send</button>
+        <post>
+            Are you sure that you want to delete
+           {{ bulletin }}?
+
+        <a href="{% url 'bulletin_list'%}">Cancel</a>
+        <button type="submit">Delete Bulletin</button>
+         </post>
     </form>
-    </div>
 {% endblock %}

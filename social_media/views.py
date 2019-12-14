@@ -1,17 +1,18 @@
-import django.utils.timezone as timezone
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, redirect
-
 # Create your views here.
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User, Group
+from django.contrib import messages
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.urls import reverse_lazy, reverse
-
+from django.views.generic import DeleteView, UpdateView, CreateView
 from social_media.forms import CommentForm, PostForm, BulletinForm
 from social_media.models import Post, Follow, Comment, Favorite,Bulletin
 from django.db import connection
 
 
+@login_required
 def homepage_list(request):
     uname= request.session['_auth_user_id']
     # posts = Post.objects.all().order_by('date').filter(author=uname)
@@ -44,6 +45,7 @@ def society_list(request):
     return render(request, 'social_media/society_list.html', {'posts': posts})
 
 
+@login_required
 def post_detail(request, pk):
     uname = request.session['_auth_user_id']
     post = get_object_or_404(Post, pk=pk)
@@ -55,6 +57,7 @@ def post_detail(request, pk):
     return render(request, 'social_media/post_detail.html', {'post': post, 'loveflag':love_flag})
 
 
+@login_required
 def add_comment(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
@@ -70,24 +73,28 @@ def add_comment(request, pk):
     return render(request, 'social_media/comment_add.html', {'form': form})
 
 
+@login_required
 def my_profile(request):
     uname = request.session['_auth_user_id']
     posts = Post.objects.all().order_by('-date').filter(author=uname)
     return render(request, 'social_media/my_profile.html', {'posts': posts})
 
 
+@login_required
 def follows(request):
     uname = request.session['_auth_user_id']
     follows_users = Follow.objects.filter(follower=uname)
     return render(request, 'social_media/follows.html', {'follows_users': follows_users})
 
 
+@login_required
 def followers(request):
     uname = request.session['_auth_user_id']
     followers_users = Follow.objects.filter(follows=uname)
     return render(request, 'social_media/followers.html', {'followers_users': followers_users})
 
 
+@login_required
 def edit_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
@@ -102,12 +109,14 @@ def edit_post(request, pk):
     return render(request, 'social_media/post_edit.html', {'form': form})
 
 
+@login_required
 def delete_post(request,pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
     return redirect('my_profile')
 
 
+@login_required
 def add_post(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -121,12 +130,14 @@ def add_post(request):
     return render(request, 'social_media/post_add.html', {'form': form})
 
 
+@login_required
 def delete_comment(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.delete()
     return redirect('post_detail', pk=comment.post.pk)
 
 
+@login_required
 def add_favorite(request, pk):
     p_id = pk
     uname = request.session['_auth_user_id']
@@ -143,6 +154,7 @@ def add_favorite(request, pk):
     return redirect('post_detail', pk=p_id)
 
 
+@login_required
 def my_favorite(request):
     uname = request.session['_auth_user_id']
     posts = set()
@@ -151,6 +163,7 @@ def my_favorite(request):
     return render(request, 'social_media/my_favorite.html', {'posts': posts})
 
 
+@login_required
 def others_profile(request, pk):
     posts = Post.objects.filter(author=pk).order_by('-date')
     uname = request.session['_auth_user_id']
@@ -163,6 +176,7 @@ def others_profile(request, pk):
     return render(request, 'social_media/others_profile.html', {'posts': posts, 'uid': pk, 'username':username,'flag':flag})
 
 
+@login_required
 def add_follows(request,pk):
     uname = request.session['_auth_user_id']
     uid = pk
@@ -176,6 +190,7 @@ def add_follows(request,pk):
     return redirect('others_profile', pk=uid)
 
 
+@login_required
 def delete_follows(request,pk):
     uname = request.session['_auth_user_id']
     uid = User.objects.get(username=pk).id
@@ -183,6 +198,7 @@ def delete_follows(request,pk):
     return redirect('follows')
 
 
+@login_required
 def delete_followers(request,pk):
     uname = request.session['_auth_user_id']
     uid = User.objects.get(username=pk).id
@@ -195,6 +211,8 @@ def bulletin_list(request):
     return render(request, 'social_media/bulletin_list.html', {'posts': posts})
 
 
+@login_required
+@permission_required('social_media.bulletin.can_add_bulletin')
 def bulletin_add(request):
     if request.method == "POST":
         form = BulletinForm(request.POST)
@@ -207,22 +225,40 @@ def bulletin_add(request):
         form = BulletinForm()
     return render(request, 'social_media/bulletin_add.html', {'form': form})
 
+# class BulletinAdd(LoginRequiredMixin, CreateView):
+#     form_class = BulletinForm
+#     model = Bulletin
+#     template_name = 'social_media/bulletin_add.html'
+#     success_url = reverse_lazy('bulletin_list')
+    # permission_required = 'courseinfo.add_registration'
 
-def bulletin_edit(request, pk):
-    post = get_object_or_404(Bulletin, pk=pk)
-    if request.method == "POST":
-        form = BulletinForm(request.POST, instance=post)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('bulletin_list')
+
+class BulletinEdit(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    form_class = BulletinForm
+    model = Bulletin
+    template_name = 'social_media/bulletin_edit.html'
+    success_url = reverse_lazy('bulletin_list')
+    permission_required = 'social_media.bulletin.can_change_bulletin'
+
+
+class BulletinDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    # post = get_object_or_404(Bulletin, pk=pk)
+    # post.delete()
+    # return redirect('bulletin_list')
+    model = Bulletin
+    success_url = reverse_lazy('bulletin_list')
+    permission_required = 'social_media.bulletin.can_delete_bulletin'
+
+
+def register(request):
+    if request.method == 'POST':
+        f = UserCreationForm(request.POST)
+        if f.is_valid():
+            user = f.save()
+            group = Group.objects.get(name='Normal_User')
+            user.groups.add(group)
+            messages.success(request, 'Account created successfully')
+            return redirect('login_urlpattern')
     else:
-        form = BulletinForm(instance=post)
-    return render(request, 'social_media/bulletin_edit.html', {'form': form})
-
-
-def bulletin_delete(request,pk):
-    post = get_object_or_404(Bulletin, pk=pk)
-    post.delete()
-    return redirect('bulletin_list')
+        f = UserCreationForm()
+    return render(request, 'social_media/register.html', {'form': f})

@@ -1,4 +1,6 @@
+
 {% extends 'social_media/base1.html' %}
+{% load auth_extras %}
 {% block head %}
         <title>Post Detail</title>
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
@@ -31,7 +33,7 @@
         </div>
         <p><icon><i class="far fa-star"></i></icon>{{ comment.author }}</p>
         <p>{{ comment.text|linebreaks }}</p>
-        <p>{% if post.author.id == user.id %}
+        <p>{% if post.author.id == user.id or request.user|has_group:"Super_User"%}
             <i class="fas fa-trash-alt"></i>
             <a href="{% url 'delete_comment' pk=comment.pk %}" class="comment">Delete</a>
         {% endif %}</p>

@@ -36,7 +36,6 @@ urlpatterns = [
          LogoutView.as_view(),
          name='logout_urlpattern'
          ),
-
     path('admin/', admin.site.urls),
     url(r'', include('social_media.urls')),
 ]
