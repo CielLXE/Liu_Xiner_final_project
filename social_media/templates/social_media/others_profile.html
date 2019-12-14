@@ -1,0 +1,64 @@
+<html>
+<head>
+    <title>{{ username.username }}'s Homepage</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" type="text/css"
+          href="../../static/social_media/social_media.css">
+    </head>
+    <body>
+    <header class = "bgimg">
+        <div class="page-header">
+            <h1>Star Social</h1>
+        </div>
+        <div class = "top-menu">
+            {% if user.is_authenticated %}
+{#                <a href="{% url 'post_new' %}" class="top-menu"></a>#}
+                Hello <a href = {% url 'my_profile' %}>{{ user.username }}</a> Follows:<a href="{% url 'follows' %}">{{ user.follower.count }}</a>  Followers:<a href="{% url 'followers' %}">{{ user.follows.count }}</a>
+             <small>(<a href="{% url 'logout_urlpattern' %}">Log out</a>)</small>
+            {% else %}
+             You do not <a href="{% url 'login_urlpattern' %}">Log in</a>
+            {% endif %}
+        </div>
+		<nav>
+            <ul>
+                {% if user.is_authenticated %}
+                     <li><i class="fas fa-home">
+                    <a href="{% url 'homepage_list' %}" >
+                        Homepage</a></i></li>
+                <li><i class="fas fa-folder-open">
+                    <a href="{% url 'others_profile' pk=uid %}" >
+                        {{ username.username }}'s Posts</a></i>
+                <a href="{% url 'add_follows' pk=uid %}">
+                    {% if flag == 1 %}
+                        <icon><i class="fas fa-heart">Followed</i></icon></a>
+                    {% else %}
+                        <icon><i class="far fa-heart">Follow</i></icon></a>
+                    {% endif %}
+                </li>
+                {% endif %}
+
+            </ul>
+		</nav>
+		<div class="content">
+            <post>
+                {% for post in posts %}
+                    <div class="date">
+                        {{ post.date }}
+                    </div>
+                    {% if post.author == user.username %}
+                    <p><icon><i class="fas fa-star"></i></icon><a href="{% url 'my_profile' %}" class="comment">{{ post.author }}</a></p>
+                    {% else %}
+                    <p><icon><i class="fas fa-star"></i></icon><a href="{% url 'others_profile' pk=uid %}" class="comment">{{ post.author }}</a></p>
+                    {% endif %}
+                    <p>{{ post.text|linebreaksbr }}</p>
+                    <p><i class="far fa-comment-dots"> </i>
+                        <a href="{% url 'post_detail' pk=post.id %}" class="comment">Comments</a></p>
+                    <p>---------------------------------------------------------</p>
+                {% empty %}
+                <p>{{ username.username}} doesn't have any posts yet :(</p>
+                {% endfor %}
+        </post>
+        </div>
+    </header>
+    </body>
+</html>

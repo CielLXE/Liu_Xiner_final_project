@@ -1,0 +1,16 @@
+{% extends 'social_media/base1.html' %}
+{% block head %}
+            <title>Edit Bulletin</title>
+            <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+            <link rel="stylesheet" type="text/css"
+                  href="../../../static/social_media/social_media.css">
+        {% endblock %}
+{% block content %}
+    <div class="comment_box">
+    <p>Edit Bulletin</p>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save</button>
+    </form>
+    </div>
+{% endblock %}

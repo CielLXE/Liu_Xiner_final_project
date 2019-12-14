@@ -1,0 +1,24 @@
+{% extends 'social_media/base2.html' %}
+{% block head %}
+    <title>My Favorite Posts</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" type="text/css"
+          href="../../static/social_media/social_media.css">
+{% endblock %}
+{% block content %}
+
+<post>
+    {% for post in posts %}
+            <div class="date">
+                {{ post.date }}
+            </div>
+            <p><icon><i class="fas fa-star"></i></icon>{{ post.author }}</p>
+            <p>{{ post.text|linebreaksbr }}</p>
+            <p><i class="far fa-comment-dots"> </i>
+                <a href="{% url 'post_detail' pk=post.id %}" class="comment">Comments</a></p>
+            <p>---------------------------------------------------------</p>
+    {% empty %}
+        <p>You don't have any favorite posts yet :(</p>
+    {% endfor %}
+    </post>
+{% endblock %}
