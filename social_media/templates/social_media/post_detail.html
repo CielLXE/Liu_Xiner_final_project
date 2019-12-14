@@ -1,4 +1,10 @@
 {% extends 'social_media/base1.html' %}
+{% block head %}
+        <title>Post Detail</title>
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <link rel="stylesheet" type="text/css"
+          href="../../static/social_media/social_media.css">
+{% endblock%}
 {% block content %}
    <post>
        <div class="date">
@@ -6,19 +12,31 @@
        </div>
        <p><icon><i class="fas fa-star"></i></icon>{{ post.author }}</p>
        <p>{{ post.text|linebreaksbr }}</p>
+{#        <form action="{% url 'add_favorite' %}" method="POST">#}
+{#         {% csrf_token %}#}
+
+           <p><a href="{% url 'add_favorite' pk=post.pk %}">
+        {% if loveflag == 1 %}
+            <icon><i class="fas fa-heart">Liked</i></icon></a>
+        {% else %}
+            <icon><i class="far fa-heart">Like</i></icon></a>
+        {% endif %}
+           </p>
    </post>
     <p> <a class="add_comment" href="{% url 'add_comment' pk=post.pk %}"><i class="far fa-comment-dots"> Add Comment</i></a></p>
     <comment_detail>
     {% for comment in post.comments.all %}
-{#    {% if user.is_authenticated or comment.approved_comment %}#}
         <div class="date">
             {{ comment.date }}
         </div>
         <p><icon><i class="far fa-star"></i></icon>{{ comment.author }}</p>
         <p>{{ comment.text|linebreaks }}</p>
+        <p>{% if post.author.id == user.id %}
+            <i class="fas fa-trash-alt"></i>
+            <a href="{% url 'delete_comment' pk=comment.pk %}" class="comment">Delete</a>
+        {% endif %}</p>
     <p>---------------------------------------------------------</p>
 
-{#    {% endif %}#}
     {% empty %}
         <p>No comments here yet :(</p>
     {% endfor %}

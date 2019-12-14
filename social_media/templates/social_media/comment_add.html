@@ -1,0 +1,16 @@
+{% extends 'social_media/base1.html' %}
+       {% block head %}
+            <title>Add Comment</title>
+            <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+            <link rel="stylesheet" type="text/css"
+                  href="../../../static/social_media/social_media.css">
+        {% endblock %}
+        {% block content %}
+                <div class="comment_box">
+                    <p>New Comment</p>
+                <form method="POST">{% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Send</button>
+                </form>
+                </div>
+        {% endblock %}

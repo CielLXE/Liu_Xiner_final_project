@@ -1,16 +1,30 @@
 {% extends 'social_media/base2.html' %}
-
+{% block head %}
+    <title>My Profile</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" type="text/css"
+          href="../../static/social_media/social_media.css">
+{% endblock %}
 {% block content %}
+   <p><a class="add_comment" href ={% url 'add_post' %}> <i class="fas fa-plus-square">Add Post</i></a></p>
+<post>
 {% for post in posts %}
-        <post>
+
             <div class="date">
                 {{ post.date }}
             </div>
             <p><icon><i class="fas fa-star"></i></icon>{{ post.author }}</p>
             <p>{{ post.text|linebreaksbr }}</p>
             <p><i class="far fa-comment-dots"> </i>
-                <a href="{% url 'post_detail' pk=post.pk %}" class="comment">Comments: {{ post.comments.count }}</a></p>
+                <a href="{% url 'post_detail' pk=post.pk %}" class="comment">Comments</a></p>
+            <p><i class="fas fa-edit"></i>
+                <a href="{% url 'edit_post' pk=post.pk %}" class="comment">Edit</a>
+            <i class="fas fa-trash-alt"></i>
+                <a href="{% url 'delete_post' pk=post.pk %}" class="comment">Delete</a></p>
             <p>---------------------------------------------------------</p>
-        </post>
+    {% empty %}
+        <p>You don't have any posts yet :(</p>
+
     {% endfor %}
+</post>
 {% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'social_media/base2.html' %}
+{% block head %}
+        <title>My Followers</title>
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <link rel="stylesheet" type="text/css"
+          href="../../static/social_media/social_media.css">
+        {% endblock%}
+{% block content %}
+    <post>
+        <h2> Followers</h2>
+    {% for followers in followers_users %}
+
+            <p><icon><i class="fas fa-star"></i></icon>{{ followers.follower }}</p>
+            <i class="fas fa-trash-alt"></i>
+            <a href="{% url 'delete_followers' pk=followers.follower %}" class="comment">Remove</a></p>
+            <p>---------------------------------------------------------</p>
+         {% empty %}
+        <p>You don't have any followers yet :(</p>
+    {% endfor %}
+    </post>
+{% endblock %}
